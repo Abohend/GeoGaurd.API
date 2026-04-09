@@ -1,0 +1,60 @@
+# Build results
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider / VS Code
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# ASP.NET Core
+appsettings.Development.json
+appsettings.Local.json
+
+# Secrets
+secrets.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# NuGet
+*.nupkg
+packages/
+
+# Publish output
+publish/
+
+# IIS Express
+iisexpress/
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# Test results
+TestResults/
+
+# Coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Node (if you add frontend later)
+node_modules/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Docker
+docker-compose.override.yml
