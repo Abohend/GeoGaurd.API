@@ -1,5 +1,4 @@
 
-using GeoGaurd.API.BackgroundServices;
 using GeoGaurd.API.Middleware;
 using GeoGaurd.API.Models.Config;
 using GeoGaurd.API.Repositories;
@@ -13,6 +12,10 @@ namespace GeoGaurd.API
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddSingleton<ICountryCatalogService, CountryCatalogService>();
+            builder.Services.AddSingleton<ICountryBlockRepository, InMemoryCountryBlockRepository>();
+
+            builder.Services.AddSingleton<ICountryBlockService, CountryBlockService>();
             // Add services to the container.
             builder.Services.AddControllers();
 
@@ -20,7 +23,7 @@ namespace GeoGaurd.API
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
-
+            
             app.UseGlobalExceptionMiddleware();
 
             // Configure the HTTP request pipeline.
