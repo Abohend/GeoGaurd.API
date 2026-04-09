@@ -12,8 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Repositories\" />
     <Folder Include="BackgroundServices\" />
   </ItemGroup>
 
