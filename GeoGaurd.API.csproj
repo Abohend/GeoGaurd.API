@@ -14,5 +14,12 @@
   <ItemGroup>
     <Folder Include="BackgroundServices\" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="GeoGaurd.API.Tests\**" />
+    <Content Remove="GeoGaurd.API.Tests\**" />
+    <EmbeddedResource Remove="GeoGaurd.API.Tests\**" />
+    <None Remove="GeoGaurd.API.Tests\**" />
+  </ItemGroup>
 
 </Project>
