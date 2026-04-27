@@ -15,13 +15,25 @@ public sealed class GeoLocationService : IGeoLocationService
     {
         _httpClient = httpClient;
         _options = options.Value;
+
+        // ipapi.co (and others) require a User-Agent and may return 429 if it's missing.
+        if (!_httpClient.DefaultRequestHeaders.Contains("User-Agent"))
+        {
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "GeoGuard.API/1.0");
+        }
+
+        if (!_httpClient.DefaultRequestHeaders.Contains("Accept"))
+        {
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+        }
     }
 
     public async Task<IpLookupResult> LookupAsync(string ipAddress, CancellationToken cancellationToken = default)
     {
+        var baseUrl = _options.BaseUrl.TrimEnd('/');
         var requestUri = string.IsNullOrWhiteSpace(_options.ApiKey)
-            ? $"{ipAddress}/json/"
-            : $"{ipAddress}/json/?key={Uri.EscapeDataString(_options.ApiKey)}";
+            ? $"{baseUrl}/{ipAddress}/json/"
+            : $"{baseUrl}/{ipAddress}/json/?key={Uri.EscapeDataString(_options.ApiKey)}";
 
         using var response = await _httpClient.GetAsync(requestUri, cancellationToken);
         if (!response.IsSuccessStatusCode)
