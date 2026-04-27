@@ -3,6 +3,7 @@ using GeoGaurd.API.Middleware;
 using GeoGaurd.API.Models.Config;
 using GeoGaurd.API.Repositories;
 using GeoGaurd.API.Services;
+using Microsoft.Extensions.Options;
 
 namespace GeoGaurd.API
 {
@@ -28,11 +29,10 @@ namespace GeoGaurd.API
 
             builder.Services.AddHttpClient<IGeoLocationService, GeoLocationService>((sp, httpClient) =>
             {
-                var options = sp.GetRequiredService<IConfiguration>()
-                    .GetSection(GeoLocationOptions.SectionName)
-                    .Get<GeoLocationOptions>() ?? new GeoLocationOptions();
-
+                var options = sp.GetRequiredService<IOptions<GeoLocationOptions>>().Value;
                 httpClient.BaseAddress = new Uri(options.BaseUrl.TrimEnd('/') + "/");
+                httpClient.DefaultRequestHeaders.Add("User-Agent", "GeoGuard.API/1.0");
+                httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
             });
 
             builder.Services.AddHostedService<TemporalBlockCleanupService>();
