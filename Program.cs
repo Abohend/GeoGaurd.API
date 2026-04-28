@@ -33,6 +33,14 @@ namespace GeoGaurd.API
                 httpClient.BaseAddress = new Uri(options.BaseUrl.TrimEnd('/') + "/");
                 httpClient.DefaultRequestHeaders.Add("User-Agent", "GeoGuard.API/1.0");
                 httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            })
+            .AddStandardResilienceHandler(options =>
+            {
+                var resilienceConfig = builder.Configuration.GetSection("GeoLocationApi:Resilience");
+                options.Retry.MaxRetryAttempts = resilienceConfig.GetValue("MaxRetryAttempts", 3);
+                options.Retry.Delay = TimeSpan.FromSeconds(resilienceConfig.GetValue("RetryBaseDelaySeconds", 2.0));
+                options.CircuitBreaker.BreakDuration = TimeSpan.FromSeconds(resilienceConfig.GetValue("CircuitBreakerDurationSeconds", 30.0));
+                options.TotalRequestTimeout.Timeout = TimeSpan.FromSeconds(resilienceConfig.GetValue("TotalTimeoutSeconds", 60.0));
             });
 
             builder.Services.AddHostedService<TemporalBlockCleanupService>();
